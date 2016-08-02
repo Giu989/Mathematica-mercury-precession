@@ -10,12 +10,11 @@ MercuryInitialSpeedY = QuantityMagnitude[Part[MercuryInitialSpeedXYZ, 2]]
 MercuryInitialPositionX = QuantityMagnitude[Part[MercuryInitialPositionXYZ, 1]]
 MercuryInitialPositionY = QuantityMagnitude[Part[MercuryInitialPositionXYZ, 2]]
 
-sol=x[t]/.NDSolve[{x''[t]==(-GConstant*SolarMass*x[t])/Norm[x[t]]^3,x[0]=={MercuryInitialPositionX,MercuryInitialPositionY},x'[0]=={MercuryInitialSpeedX,MercuryInitialSpeedY}},x[t],{t,0,9000000}][[1]]
-ParametricPlot[sol,{t,0,9000000}]
-
-?sol
-
-Manipulate[Module[{xo={a,0},u0={0,2.37},sol},sol=x[t]/.NDSolve[{x''[t]==(-g x[t])/Norm[x[t]]^3,x[0]==xo,x'[0]==u0},x[t],{t,0,b}][[1]];ParametricPlot[sol,{t,0,b},PlotRange->3]],{g,3,10},{a,1,5},{b,1,10}]
+sol=x[t]/.NDSolve[{x''[t]==(-GConstant*SolarMass*x[t])/Norm[x[t]]^3,x[0]=={MercuryInitialPositionX,MercuryInitialPositionY},x'[0]=={MercuryInitialSpeedX,MercuryInitialSpeedY}},x[t],{t,0,90000000}][[1]]
+(*gr=Graphics[Disk[sol,1000000000]];
+*)Manipulate[
+(*Show[gr;*)
+ParametricPlot[sol,{t,0,a}](*]*),{a,1,9000000}]
 
 
 (* ::InheritFromParent:: *)
@@ -35,3 +34,11 @@ Manipulate[Module[{xo={a,0},u0={0,2.37},sol},sol=x[t]/.NDSolve[{x''[t]==(-g x[t]
 (* ::InheritFromParent:: *)
 (*Manipulate[Graphics[{Circle[{0, 0}, r], Point[twoddata], Point[{0, 0}]}], *)
 (*  {r, 0, 10}]*)
+
+
+
+
+
+(* ::InheritFromParent:: *)
+(**)
+
