@@ -7,3 +7,5 @@ Stage 3: Model the effect of the planets on Mercury
 Stage 4: Change mass/etc of planets to see if it changes anything
 Stage 5: Maybe add relativty? We'll discuss afterwards
 Stage 6: Profit
+
+All hail David
