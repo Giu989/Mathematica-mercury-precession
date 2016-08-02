@@ -5,4 +5,4 @@ Stage 1: Start with mercury and sun (almost done - don't have actual data but we
 Stage 2: Add other planets to the orbit
 Stage 3: Model the effect of the planets on Mercury
 Stage 4: Change mass/etc of planets to see if it changes anything
-Stage 5: Maybe add relativty? We'll discuss afterwards
+Stage 5: Maybe add relativty? We'll discuss afterwards.
