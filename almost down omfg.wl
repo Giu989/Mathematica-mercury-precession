@@ -52,8 +52,6 @@ NeptuneY:=NeptuneOrbitDistance*Sin[-2Pi*(t/NeptuneOrbitTimeInSeconds)];
 NeptuneMass= 1.024*10^26;
 NeptuneEffect:=(-GConstant*NeptuneMass*{x[t]-NeptuneX,y[t]-NeptuneY})/(Norm[{x[t]-NeptuneX,y[t]-NeptuneY}]^3);
 
-
-
 AU=149597870700
 
 MercuryInitialSpeedXYZ = AstronomicalData["Mercury",{"Position", {2016,8,2,0,0,0}}] - AstronomicalData["Mercury",{"Position", {2016,8,2,0,0,1}}];
@@ -72,7 +70,7 @@ dequation:=NDSolve[{{x''[t],y''[t]}==(-GConstant*SolarMass*{x[t],y[t]})/Norm[{x[
 Manipulate[
 Show[
 
-ParametricPlot[sol1,{t,0,90000000},PlotRange->{-1.5 VenusOrbitDistance,1.5 VenusOrbitDistance},Epilog->{Arrow[{sol1/.t->a,0.5 sol1/.t->a}],Red,PointSize[Large],Point[{0,0}],Black,PointSize[Medium],Dynamic@Point[sol1/.t->a]}],ParametricPlot[VenusOrbitDistance*{Cos[2Pi*(t/VenusOrbitTimeInSeconds)],-Sin[2Pi*(t/VenusOrbitTimeInSeconds)]},{t,0.01,a}]],{{a,0,"Mercury"},0,9000000}]
+ParametricPlot[sol1,{t,0,90000000},PlotRange->{-1.5 VenusOrbitDistance,1.5 VenusOrbitDistance},Epilog->{Arrow[{sol1/.t->a,0.5 sol1/.t->a}],Red,PointSize[Large],Point[{0,0}],Black,PointSize[Medium],Dynamic@Point[sol1/.t->a]}],ParametricPlot[VenusOrbitDistance*{Cos[2Pi*(t/VenusOrbitTimeInSeconds)],-Sin[2Pi*(t/VenusOrbitTimeInSeconds)]},{t,0.01,a}]],{{a,0,"Mercury"},0,17000000}]
 
 Manipulate[
 Show[
@@ -84,7 +82,7 @@ ParametricPlot[sol2,{t,0.1,a},PlotRange->{{-c AU,c AU},{-c AU,c AU}},Epilog->{Re
 (*Saturn*) ParametricPlot[{SaturnX,SaturnY},{t,0.01,a},PlotStyle->{Thick,Dashed,RGBColor[1,0.5,0.24]}],
 (*Uranus*) ParametricPlot[{UranusX,UranusY},{t,0.01,a},PlotStyle->{Thick,Dashed,RGBColor[0.5,0.86,0.79]}],
 (*Neptune*) ParametricPlot[{NeptuneX,NeptuneY},{t,0.01,a},PlotStyle->{Thick,Dashed,RGBColor[0,0.55,1]}]],
-{{a,0,"Time /seconds"},0,250000000}(*{{b,1000000,"solution length"},1,100000000}*),{{c,1,"PlotRange /m"},0.5,31}]
+{{a,0,"Time /seconds"},0,2000000000}(*{{b,1000000,"solution length"},1,100000000}*),{{c,1,"PlotRange /m"},0.5,31}]
 
 sol2={x[t],y[t]}/.dequation;
 distance=Norm[sol2];
@@ -100,12 +98,16 @@ peaks = FindPeaks[distancelist];
 Plot[distance[t],{t,0,10000000}]
 ListPlot[distancelist,AxesLabel->{"Time /10ks","Distance from sun /m"}]
 
-PeakTimes = 10000 * Table[(peaks[[n]])[[1]],{n,2,Length[peaks]}]
-coordwithtime:=Table[sol2[t]/.t->PeakTimes[[n]],{n,1,Length[PeakTimes]}]
+PeakTimes = 10000 * Table[(peaks[[n]])[[1]],{n,2,Length[peaks]}];
+coordwithtime:=Table[sol2[t]/.t->PeakTimes[[n]],{n,1,Length[PeakTimes]}];
 coordwithtime[[1]]
 
-coordwithtime:=Table[sol2[t]/.t->PeakTimes[[n]],{n,1,Length[PeakTimes]}]
-coordwithtime[[1]][[0]]
-ListLinePlot[Table[(180/Pi) ArcTan[coordwithtime[[n]][[0]][[2]]/coordwithtime[[n]][[0]][[1]]],{n,1,Length[PeakTimes]}]]
-coordwithtime
+coordwithtime:=Table[sol2[t]/.t->PeakTimes[[n]],{n,1,Length[PeakTimes]}];
+coordwithtime[[1]][[0]];
+precessiondata=Table[(180/Pi) ArcTan[coordwithtime[[n]][[0]][[2]]/coordwithtime[[n]][[0]][[1]]],{n,1,Length[PeakTimes]}];
+finalgraph=ListLinePlot[Table[(180/Pi) ArcTan[coordwithtime[[n]][[0]][[2]]/coordwithtime[[n]][[0]][[1]]],{n,1,Length[PeakTimes]}]];
 
+line = Fit[precessiondata, {1, x}, x]
+Show[finalgraph,
+
+Plot[line,{x,0,1200}]]
