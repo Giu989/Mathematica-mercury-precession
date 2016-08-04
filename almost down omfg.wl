@@ -7,49 +7,49 @@ VenusOrbitDistance = 1.0820893*10^11;
 VenusOrbitTimeInSeconds = 1.9414149*10^7;
 VenusX:=VenusOrbitDistance*Cos[2Pi*(t/VenusOrbitTimeInSeconds)];
 VenusY:=VenusOrbitDistance*Sin[-2Pi*(t/VenusOrbitTimeInSeconds)];
-VenusMass=0.01 SolarMass;
+VenusMass=4.867*10^24;
 VenusEffect:=(-GConstant*VenusMass*{x[t]-VenusX,y[t]-VenusY})/(Norm[{x[t]-VenusX,y[t]-VenusY}]^3);
 (*EarthInfo*)
 EarthOrbitDistance=AU;
 EarthOrbitTimeInSeconds=31557600;
 EarthX:=EarthOrbitDistance*Cos[2Pi*(t/EarthOrbitTimeInSeconds)];
 EarthY:=EarthOrbitDistance*Sin[-2Pi*(t/EarthOrbitTimeInSeconds)];
-EarthMass=0.01 SolarMass;
+EarthMass=5.972*10^24;
 EarthEffect:=(-GConstant*EarthMass*{x[t]-EarthX,y[t]-EarthY})/(Norm[{x[t]-EarthX,y[t]-EarthY}]^3)
 (*Mars*)
 MarsOrbitDistance=1.524 AU;
 MarsOrbitTimeInSeconds=59355036;
 MarsX:=MarsOrbitDistance*Cos[2Pi*(t/MarsOrbitTimeInSeconds)];
 MarsY:=MarsOrbitDistance*Sin[-2Pi*(t/MarsOrbitTimeInSeconds)];
-MarsMass=0.01 SolarMass;
+MarsMass=6.39*10^23;
 MarsEffect:=(-GConstant*MarsMass*{x[t]-MarsX,y[t]-MarsY})/(Norm[{x[t]-MarsX,y[t]-MarsY}]^3);
 (*Jupiter*)
 JupiterOrbitDistance=5.2 AU;
 JupiterOrbitTimeInSeconds=374355660;
 JupiterX:=JupiterOrbitDistance*Cos[2Pi*(t/JupiterOrbitTimeInSeconds)];
 JupiterY:=JupiterOrbitDistance*Sin[-2Pi*(t/JupiterOrbitTimeInSeconds)];
-JupiterMass= 0.01 SolarMass;
+JupiterMass= 1.8988*10^27;
 JupiterEffect:=(-GConstant*JupiterMass*{x[t]-JupiterX,y[t]-JupiterY})/(Norm[{x[t]-JupiterX,y[t]-JupiterY}]^3);
 (*Saturn*)
 SaturnOrbitDistance=9.5370 AU;
 SaturnOrbitTimeInSeconds=929292360;
 SaturnX:=SaturnOrbitDistance*Cos[2Pi*(t/SaturnOrbitTimeInSeconds)];
 SaturnY:=SaturnOrbitDistance*Sin[-2Pi*(t/SaturnOrbitTimeInSeconds)];
-SaturnMass= 0.1 SolarMass;
+SaturnMass= 5.683*10^26;
 SaturnEffect:=(-GConstant*SaturnMass*{x[t]-SaturnX,y[t]-SaturnY})/(Norm[{x[t]-SaturnX,y[t]-SaturnY}]^3);
 (*Uranus*)
 UranusOrbitDistance=19.96 AU;
 UranusOrbitTimeInSeconds=2651370000;
 UranusX:=UranusOrbitDistance*Cos[2Pi*(t/UranusOrbitTimeInSeconds)];
 UranusY:=UranusOrbitDistance*Sin[-2Pi*(t/UranusOrbitTimeInSeconds)];
-UranusMass= 0.1 SolarMass;
+UranusMass= 8.681*10^25;
 UranusEffect:=(-GConstant*UranusMass*{x[t]-UranusX,y[t]-UranusY})/(Norm[{x[t]-UranusX,y[t]-UranusY}]^3);
 (*Neptune*)
 NeptuneOrbitDistance=29.95 AU;
 NeptuneOrbitTimeInSeconds=5200418600;
 NeptuneX:=NeptuneOrbitDistance*Cos[2Pi*(t/NeptuneOrbitTimeInSeconds)];
 NeptuneY:=NeptuneOrbitDistance*Sin[-2Pi*(t/NeptuneOrbitTimeInSeconds)];
-NeptuneMass= 0.1 SolarMass;
+NeptuneMass= 1.024*10^26;
 NeptuneEffect:=(-GConstant*NeptuneMass*{x[t]-NeptuneX,y[t]-NeptuneY})/(Norm[{x[t]-NeptuneX,y[t]-NeptuneY}]^3);
 
 
@@ -92,10 +92,20 @@ distance=Norm[sol2];
 NMaximize[{distance,0<t<90000000},t];
 sol3=(Sqrt[x[t]^2+y[t]^2])/.dequation;
 
-distance=Interpolation[Table[{i,sol3/.t->i},{i,0,9000000000,1000000}]];
+distance=Interpolation[Table[{i,sol3/.t->i},{i,0,9000000000,1000000}]]; (*Not really that important but still*)
 
-distancelist=Table[sol3,{t,0,900000000,10000}];
+distancelist=Table[sol3,{t,0,9000000000,10000}]; (*calculate for this amount of seconds*)
 
-FindPeaks[distancelist]
+peaks = FindPeaks[distancelist];
 Plot[distance[t],{t,0,10000000}]
-ListPlot[distancelist,AxesLabel->{"Time /ks","Distance from sun /m"}]
+ListPlot[distancelist,AxesLabel->{"Time /10ks","Distance from sun /m"}]
+
+PeakTimes = 10000 * Table[(peaks[[n]])[[1]],{n,2,Length[peaks]}]
+coordwithtime:=Table[sol2[t]/.t->PeakTimes[[n]],{n,1,Length[PeakTimes]}]
+coordwithtime[[1]]
+
+coordwithtime:=Table[sol2[t]/.t->PeakTimes[[n]],{n,1,Length[PeakTimes]}]
+coordwithtime[[1]][[0]]
+ListLinePlot[Table[(180/Pi) ArcTan[coordwithtime[[n]][[0]][[2]]/coordwithtime[[n]][[0]][[1]]],{n,1,Length[PeakTimes]}]]
+coordwithtime
+
